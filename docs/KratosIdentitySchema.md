@@ -1,11 +1,11 @@
-# Ory.Kratos.Client.Model.KratosMeta
-This might include a label and other information that can optionally be used to render UIs.
+# Ory.Kratos.Client.Model.KratosIdentitySchema
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Label** | [**KratosUiText**](KratosUiText.md) |  | [optional] 
+**Id** | **string** | The ID of the Identity JSON Schema | [optional] 
+**Schema** | **Object** | The actual Identity JSON Schema | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
