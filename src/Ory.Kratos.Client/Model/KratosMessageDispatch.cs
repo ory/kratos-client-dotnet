@@ -27,36 +27,72 @@ using OpenAPIDateConverter = Ory.Kratos.Client.Client.OpenAPIDateConverter;
 namespace Ory.Kratos.Client.Model
 {
     /// <summary>
-    /// KratosFlowError
+    /// MessageDispatch represents an attempt of sending a courier message It contains the status of the attempt (failed or successful) and the error if any occured
     /// </summary>
-    [DataContract(Name = "flowError")]
-    public partial class KratosFlowError : IEquatable<KratosFlowError>, IValidatableObject
+    [DataContract(Name = "messageDispatch")]
+    public partial class KratosMessageDispatch : IEquatable<KratosMessageDispatch>, IValidatableObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="KratosFlowError" /> class.
+        /// The status of this dispatch Either \&quot;failed\&quot; or \&quot;success\&quot; failed CourierMessageDispatchStatusFailed success CourierMessageDispatchStatusSuccess
+        /// </summary>
+        /// <value>The status of this dispatch Either \&quot;failed\&quot; or \&quot;success\&quot; failed CourierMessageDispatchStatusFailed success CourierMessageDispatchStatusSuccess</value>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum StatusEnum
+        {
+            /// <summary>
+            /// Enum Failed for value: failed
+            /// </summary>
+            [EnumMember(Value = "failed")]
+            Failed = 1,
+
+            /// <summary>
+            /// Enum Success for value: success
+            /// </summary>
+            [EnumMember(Value = "success")]
+            Success = 2
+
+        }
+
+
+        /// <summary>
+        /// The status of this dispatch Either \&quot;failed\&quot; or \&quot;success\&quot; failed CourierMessageDispatchStatusFailed success CourierMessageDispatchStatusSuccess
+        /// </summary>
+        /// <value>The status of this dispatch Either \&quot;failed\&quot; or \&quot;success\&quot; failed CourierMessageDispatchStatusFailed success CourierMessageDispatchStatusSuccess</value>
+        [DataMember(Name = "status", IsRequired = true, EmitDefaultValue = false)]
+        public StatusEnum Status { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KratosMessageDispatch" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected KratosFlowError()
+        protected KratosMessageDispatch()
         {
             this.AdditionalProperties = new Dictionary<string, object>();
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="KratosFlowError" /> class.
+        /// Initializes a new instance of the <see cref="KratosMessageDispatch" /> class.
         /// </summary>
-        /// <param name="createdAt">CreatedAt is a helper struct field for gobuffalo.pop..</param>
+        /// <param name="createdAt">CreatedAt is a helper struct field for gobuffalo.pop. (required).</param>
         /// <param name="error">error.</param>
-        /// <param name="id">ID of the error container. (required).</param>
-        /// <param name="updatedAt">UpdatedAt is a helper struct field for gobuffalo.pop..</param>
-        public KratosFlowError(DateTime createdAt = default(DateTime), Object error = default(Object), string id = default(string), DateTime updatedAt = default(DateTime))
+        /// <param name="id">The ID of this message dispatch (required).</param>
+        /// <param name="messageId">The ID of the message being dispatched (required).</param>
+        /// <param name="status">The status of this dispatch Either \&quot;failed\&quot; or \&quot;success\&quot; failed CourierMessageDispatchStatusFailed success CourierMessageDispatchStatusSuccess (required).</param>
+        /// <param name="updatedAt">UpdatedAt is a helper struct field for gobuffalo.pop. (required).</param>
+        public KratosMessageDispatch(DateTime createdAt = default(DateTime), Object error = default(Object), string id = default(string), string messageId = default(string), StatusEnum status = default(StatusEnum), DateTime updatedAt = default(DateTime))
         {
+            this.CreatedAt = createdAt;
             // to ensure "id" is required (not null)
             if (id == null) {
-                throw new ArgumentNullException("id is a required property for KratosFlowError and cannot be null");
+                throw new ArgumentNullException("id is a required property for KratosMessageDispatch and cannot be null");
             }
             this.Id = id;
-            this.CreatedAt = createdAt;
-            this.Error = error;
+            // to ensure "messageId" is required (not null)
+            if (messageId == null) {
+                throw new ArgumentNullException("messageId is a required property for KratosMessageDispatch and cannot be null");
+            }
+            this.MessageId = messageId;
+            this.Status = status;
             this.UpdatedAt = updatedAt;
+            this.Error = error;
             this.AdditionalProperties = new Dictionary<string, object>();
         }
 
@@ -64,7 +100,7 @@ namespace Ory.Kratos.Client.Model
         /// CreatedAt is a helper struct field for gobuffalo.pop.
         /// </summary>
         /// <value>CreatedAt is a helper struct field for gobuffalo.pop.</value>
-        [DataMember(Name = "created_at", EmitDefaultValue = false)]
+        [DataMember(Name = "created_at", IsRequired = true, EmitDefaultValue = false)]
         public DateTime CreatedAt { get; set; }
 
         /// <summary>
@@ -74,17 +110,24 @@ namespace Ory.Kratos.Client.Model
         public Object Error { get; set; }
 
         /// <summary>
-        /// ID of the error container.
+        /// The ID of this message dispatch
         /// </summary>
-        /// <value>ID of the error container.</value>
+        /// <value>The ID of this message dispatch</value>
         [DataMember(Name = "id", IsRequired = true, EmitDefaultValue = false)]
         public string Id { get; set; }
+
+        /// <summary>
+        /// The ID of the message being dispatched
+        /// </summary>
+        /// <value>The ID of the message being dispatched</value>
+        [DataMember(Name = "message_id", IsRequired = true, EmitDefaultValue = false)]
+        public string MessageId { get; set; }
 
         /// <summary>
         /// UpdatedAt is a helper struct field for gobuffalo.pop.
         /// </summary>
         /// <value>UpdatedAt is a helper struct field for gobuffalo.pop.</value>
-        [DataMember(Name = "updated_at", EmitDefaultValue = false)]
+        [DataMember(Name = "updated_at", IsRequired = true, EmitDefaultValue = false)]
         public DateTime UpdatedAt { get; set; }
 
         /// <summary>
@@ -100,10 +143,12 @@ namespace Ory.Kratos.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class KratosFlowError {\n");
+            sb.Append("class KratosMessageDispatch {\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  Error: ").Append(Error).Append("\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  MessageId: ").Append(MessageId).Append("\n");
+            sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  UpdatedAt: ").Append(UpdatedAt).Append("\n");
             sb.Append("  AdditionalProperties: ").Append(AdditionalProperties).Append("\n");
             sb.Append("}\n");
@@ -126,15 +171,15 @@ namespace Ory.Kratos.Client.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as KratosFlowError);
+            return this.Equals(input as KratosMessageDispatch);
         }
 
         /// <summary>
-        /// Returns true if KratosFlowError instances are equal
+        /// Returns true if KratosMessageDispatch instances are equal
         /// </summary>
-        /// <param name="input">Instance of KratosFlowError to be compared</param>
+        /// <param name="input">Instance of KratosMessageDispatch to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(KratosFlowError input)
+        public bool Equals(KratosMessageDispatch input)
         {
             if (input == null)
             {
@@ -155,6 +200,15 @@ namespace Ory.Kratos.Client.Model
                     this.Id == input.Id ||
                     (this.Id != null &&
                     this.Id.Equals(input.Id))
+                ) && 
+                (
+                    this.MessageId == input.MessageId ||
+                    (this.MessageId != null &&
+                    this.MessageId.Equals(input.MessageId))
+                ) && 
+                (
+                    this.Status == input.Status ||
+                    this.Status.Equals(input.Status)
                 ) && 
                 (
                     this.UpdatedAt == input.UpdatedAt ||
@@ -185,6 +239,11 @@ namespace Ory.Kratos.Client.Model
                 {
                     hashCode = (hashCode * 59) + this.Id.GetHashCode();
                 }
+                if (this.MessageId != null)
+                {
+                    hashCode = (hashCode * 59) + this.MessageId.GetHashCode();
+                }
+                hashCode = (hashCode * 59) + this.Status.GetHashCode();
                 if (this.UpdatedAt != null)
                 {
                     hashCode = (hashCode * 59) + this.UpdatedAt.GetHashCode();
