@@ -27,60 +27,47 @@ using OpenAPIDateConverter = Ory.Kratos.Client.Client.OpenAPIDateConverter;
 namespace Ory.Kratos.Client.Model
 {
     /// <summary>
-    /// Response for a single identity patch
+    /// The Response for Registration Flows via API
     /// </summary>
-    [DataContract(Name = "identityPatchResponse")]
-    public partial class KratosIdentityPatchResponse : IEquatable<KratosIdentityPatchResponse>, IValidatableObject
+    [DataContract(Name = "successfulCodeExchangeResponse")]
+    public partial class KratosSuccessfulCodeExchangeResponse : IEquatable<KratosSuccessfulCodeExchangeResponse>, IValidatableObject
     {
         /// <summary>
-        /// The action for this specific patch create ActionCreate  Create this identity.
+        /// Initializes a new instance of the <see cref="KratosSuccessfulCodeExchangeResponse" /> class.
         /// </summary>
-        /// <value>The action for this specific patch create ActionCreate  Create this identity.</value>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public enum ActionEnum
+        [JsonConstructorAttribute]
+        protected KratosSuccessfulCodeExchangeResponse()
         {
-            /// <summary>
-            /// Enum Create for value: create
-            /// </summary>
-            [EnumMember(Value = "create")]
-            Create = 1
-
+            this.AdditionalProperties = new Dictionary<string, object>();
         }
-
-
         /// <summary>
-        /// The action for this specific patch create ActionCreate  Create this identity.
+        /// Initializes a new instance of the <see cref="KratosSuccessfulCodeExchangeResponse" /> class.
         /// </summary>
-        /// <value>The action for this specific patch create ActionCreate  Create this identity.</value>
-        [DataMember(Name = "action", EmitDefaultValue = false)]
-        public ActionEnum? Action { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="KratosIdentityPatchResponse" /> class.
-        /// </summary>
-        /// <param name="action">The action for this specific patch create ActionCreate  Create this identity..</param>
-        /// <param name="identity">The identity ID payload of this patch.</param>
-        /// <param name="patchId">The ID of this patch response, if an ID was specified in the patch..</param>
-        public KratosIdentityPatchResponse(ActionEnum? action = default(ActionEnum?), string identity = default(string), string patchId = default(string))
+        /// <param name="session">session (required).</param>
+        /// <param name="sessionToken">The Session Token  A session token is equivalent to a session cookie, but it can be sent in the HTTP Authorization Header:  Authorization: bearer ${session-token}  The session token is only issued for API flows, not for Browser flows!.</param>
+        public KratosSuccessfulCodeExchangeResponse(KratosSession session = default(KratosSession), string sessionToken = default(string))
         {
-            this.Action = action;
-            this.Identity = identity;
-            this.PatchId = patchId;
+            // to ensure "session" is required (not null)
+            if (session == null) {
+                throw new ArgumentNullException("session is a required property for KratosSuccessfulCodeExchangeResponse and cannot be null");
+            }
+            this.Session = session;
+            this.SessionToken = sessionToken;
             this.AdditionalProperties = new Dictionary<string, object>();
         }
 
         /// <summary>
-        /// The identity ID payload of this patch
+        /// Gets or Sets Session
         /// </summary>
-        /// <value>The identity ID payload of this patch</value>
-        [DataMember(Name = "identity", EmitDefaultValue = false)]
-        public string Identity { get; set; }
+        [DataMember(Name = "session", IsRequired = true, EmitDefaultValue = false)]
+        public KratosSession Session { get; set; }
 
         /// <summary>
-        /// The ID of this patch response, if an ID was specified in the patch.
+        /// The Session Token  A session token is equivalent to a session cookie, but it can be sent in the HTTP Authorization Header:  Authorization: bearer ${session-token}  The session token is only issued for API flows, not for Browser flows!
         /// </summary>
-        /// <value>The ID of this patch response, if an ID was specified in the patch.</value>
-        [DataMember(Name = "patch_id", EmitDefaultValue = false)]
-        public string PatchId { get; set; }
+        /// <value>The Session Token  A session token is equivalent to a session cookie, but it can be sent in the HTTP Authorization Header:  Authorization: bearer ${session-token}  The session token is only issued for API flows, not for Browser flows!</value>
+        [DataMember(Name = "session_token", EmitDefaultValue = false)]
+        public string SessionToken { get; set; }
 
         /// <summary>
         /// Gets or Sets additional properties
@@ -95,10 +82,9 @@ namespace Ory.Kratos.Client.Model
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("class KratosIdentityPatchResponse {\n");
-            sb.Append("  Action: ").Append(Action).Append("\n");
-            sb.Append("  Identity: ").Append(Identity).Append("\n");
-            sb.Append("  PatchId: ").Append(PatchId).Append("\n");
+            sb.Append("class KratosSuccessfulCodeExchangeResponse {\n");
+            sb.Append("  Session: ").Append(Session).Append("\n");
+            sb.Append("  SessionToken: ").Append(SessionToken).Append("\n");
             sb.Append("  AdditionalProperties: ").Append(AdditionalProperties).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -120,15 +106,15 @@ namespace Ory.Kratos.Client.Model
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as KratosIdentityPatchResponse);
+            return this.Equals(input as KratosSuccessfulCodeExchangeResponse);
         }
 
         /// <summary>
-        /// Returns true if KratosIdentityPatchResponse instances are equal
+        /// Returns true if KratosSuccessfulCodeExchangeResponse instances are equal
         /// </summary>
-        /// <param name="input">Instance of KratosIdentityPatchResponse to be compared</param>
+        /// <param name="input">Instance of KratosSuccessfulCodeExchangeResponse to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(KratosIdentityPatchResponse input)
+        public bool Equals(KratosSuccessfulCodeExchangeResponse input)
         {
             if (input == null)
             {
@@ -136,18 +122,14 @@ namespace Ory.Kratos.Client.Model
             }
             return 
                 (
-                    this.Action == input.Action ||
-                    this.Action.Equals(input.Action)
+                    this.Session == input.Session ||
+                    (this.Session != null &&
+                    this.Session.Equals(input.Session))
                 ) && 
                 (
-                    this.Identity == input.Identity ||
-                    (this.Identity != null &&
-                    this.Identity.Equals(input.Identity))
-                ) && 
-                (
-                    this.PatchId == input.PatchId ||
-                    (this.PatchId != null &&
-                    this.PatchId.Equals(input.PatchId))
+                    this.SessionToken == input.SessionToken ||
+                    (this.SessionToken != null &&
+                    this.SessionToken.Equals(input.SessionToken))
                 )
                 && (this.AdditionalProperties.Count == input.AdditionalProperties.Count && !this.AdditionalProperties.Except(input.AdditionalProperties).Any());
         }
@@ -161,14 +143,13 @@ namespace Ory.Kratos.Client.Model
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                hashCode = (hashCode * 59) + this.Action.GetHashCode();
-                if (this.Identity != null)
+                if (this.Session != null)
                 {
-                    hashCode = (hashCode * 59) + this.Identity.GetHashCode();
+                    hashCode = (hashCode * 59) + this.Session.GetHashCode();
                 }
-                if (this.PatchId != null)
+                if (this.SessionToken != null)
                 {
-                    hashCode = (hashCode * 59) + this.PatchId.GetHashCode();
+                    hashCode = (hashCode * 59) + this.SessionToken.GetHashCode();
                 }
                 if (this.AdditionalProperties != null)
                 {
