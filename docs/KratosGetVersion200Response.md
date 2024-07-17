@@ -1,10 +1,10 @@
-# Ory.Kratos.Client.Model.KratosInlineResponse2001
+# Ory.Kratos.Client.Model.KratosGetVersion200Response
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**_Version** | **string** | The version of Ory Kratos. | 
+**VarVersion** | **string** | The version of Ory Kratos. | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

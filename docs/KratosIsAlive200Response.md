@@ -1,4 +1,4 @@
-# Ory.Kratos.Client.Model.KratosInlineResponse200
+# Ory.Kratos.Client.Model.KratosIsAlive200Response
 
 ## Properties
 
